@@ -27,7 +27,8 @@ GPT_4_VISION_MODELS = ("gpt-4o",)
 GPT_4_128K_MODELS = ("gpt-4-1106-preview", "gpt-4-0125-preview", "gpt-4-turbo-preview", "gpt-4-turbo", "gpt-4-turbo-2024-04-09")
 GPT_4O_MODELS = ("gpt-4o", "gpt-4o-mini", "chatgpt-4o-latest")
 O_MODELS = ("o1", "o1-mini", "o1-preview")
-GPT_ALL_MODELS = GPT_3_MODELS + GPT_3_16K_MODELS + GPT_4_MODELS + GPT_4_32K_MODELS + GPT_4_VISION_MODELS + GPT_4_128K_MODELS + GPT_4O_MODELS + O_MODELS
+DEEPSEEK = ("deepseek-chat",)
+GPT_ALL_MODELS = GPT_3_MODELS + GPT_3_16K_MODELS + GPT_4_MODELS + GPT_4_32K_MODELS + GPT_4_VISION_MODELS + GPT_4_128K_MODELS + GPT_4O_MODELS + O_MODELS + DEEPSEEK
 
 def default_max_tokens(model: str) -> int:
     """
@@ -53,6 +54,8 @@ def default_max_tokens(model: str) -> int:
     elif model in GPT_4O_MODELS:
         return 4096
     elif model in O_MODELS:
+        return 4096
+    else:
         return 4096
 
 
@@ -640,6 +643,8 @@ class OpenAIHelper:
                 return 32_768
             else:
                 return 65_536
+        elif self.config["model"] in DEEPSEEK: 
+            return 32_768
         raise NotImplementedError(
             f"Max tokens for model {self.config['model']} is not implemented yet."
         )
